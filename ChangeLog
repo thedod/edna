@@ -1,6 +1,7 @@
-Changes since 0.5 1st dame [2012/03/23]:
+Changes since 0.6d1 (1st dame) [2012/03/23]:
 - Fork from http://edna.sourceforge.net to github
 - edna.conf is .gitignored
+- case insensitive sort
 - favicon (for vanity's sake)
 
 Changes since 0.5 [2003/05/19]:

@@ -20,14 +20,17 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 #
-# This software is maintained by Greg and is available at:
+# Original Edna is maintained by Greg and is available at:
 #    http://edna.sourceforge.net/
 #
 # Here is the CVS ID for tracking purposes:
 #   $Id: edna.py,v 1.83 2006/03/11 19:36:29 syrk Exp $
 #
+# This software was forked from Edna 0.6 2012/03/23
+# It's maintained by The Dod, and is available at
+#    https://github.com/thedod/edna
 
-__version__ = '0.6'
+__version__ = '0.6d1' # 1st dame
 
 import SocketServer
 import BaseHTTPServer
@@ -995,7 +998,7 @@ def _usable_file(fname):
 
 def sort_dir(d):
   l = filter(_usable_file, os.listdir(d))
-  l.sort()
+  l.sort(lambda x,y: cmp(x.lower(),y.lower()))
   return l
 
 def dot2int(dotaddr):
