@@ -76,8 +76,8 @@ except ImportError:
 
 error = __name__ + '.error'
 
-
-TITLE = 'Streaming MP3 Server'
+DEFAULT_NAME = 'Edna'
+DEFAULT_DESC = 'Streaming MP3 Server (V0.6 1st dame)'
 
 
 # a pattern used to trim leading digits, spaces, and dashes from a song
@@ -110,6 +110,8 @@ class Server(mixin, BaseHTTPServer.HTTPServer):
 
     # set up some defaults for the web server.
     d = config.defaults()
+    d['name'] = DEFAULT_NAME
+    d['description'] = DEFAULT_DESC
     d['port'] = '8080'
     d['robots'] = '1'
     d['binding-hostname'] = ''
@@ -390,7 +392,7 @@ class EdnaRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
       for d, name in self.server.dirs:
         subdirs.append(_datablob(href=urllib.quote(name) + '/', is_new='',
                                  text=name))
-      self.display_page(TITLE, subdirs, skiprec=1)
+      self.display_page(self.server.config.get('server','description'), subdirs, skiprec=1)
     elif path and path[0] == 'stats':
       # the site statistics were requested
       self.display_stats()
@@ -406,7 +408,7 @@ class EdnaRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
       if path:
         title = cgi.escape(path[-1])
       else:
-        title = TITLE
+        title = self.server.config.get('server','description')
       if len(self.server.dirs) == 1:
         url = '/'
         curdir = self.server.dirs[0][0]
@@ -542,7 +544,9 @@ class EdnaRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     self.send_header("Content-Type", 'text/html')
     self.end_headers()
 
-    data = { 'users' : [ ],
+    data = { 'name' : self.server.config.get('server','name'),
+             'title' : self.server.config.get('server','description'),
+             'users' : [ ],
              'ips' : [ ],
              }
 
@@ -581,7 +585,8 @@ class EdnaRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     self.send_header("Content-Type", content_type)
     self.end_headers()
 
-    data = { 'title' : title,
+    data = { 'name' : self.server.config.get('server','name'),
+             'title' : title,
              'links' : self.tree_position(),
              'pictures' : pictures,
              'plainfiles' : plainfiles,
@@ -604,7 +609,7 @@ class EdnaRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
     url = self.build_url('')[:-1]  # lose the trailing slash
 
-    links = [ '<a href="%s/">HOME</a>\n' % url ]
+    links = [ '<a href="%s/">%s</a>\n' % (url,self.server.config.get('server','name')) ]
 
     last = len(mypath)
     for count in range(last):
@@ -749,7 +754,7 @@ class EdnaRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                                 (self.server.zipsize, clen, self.server.zipmax))
 
       if self.server.zipsize + clen > self.server.zipmax:
-        self.send_error(503, 'The <b>ZIP</b> service is currently under heavy load.  Please try again later.')
+        self.send_error(503, 'The ZIP service is currently under heavy load.  Please try again later.')
         return
 
       self.server.zipsize += clen
