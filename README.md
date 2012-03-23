@@ -1,4 +1,4 @@
-### Edna i(V0.6 1st dame) -- an MP3 server
+### Edna (V0.6 1st dame) -- an MP3 server
 
 The [original](http://edna.sourceforge.net) Edna was created by [Greg Stein](http://www.lyra.org/) February 1999, and is still the best solution for:
 
