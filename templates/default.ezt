@@ -22,7 +22,7 @@
 [if-any pictures]
   <p>
   [for pictures]
-    <a href="[pictures.href]"><img border="0" width="128" height="128" src="[pictures.href]"></a>
+    <a href="[pictures.href]"><img border="0" height="128" src="[pictures.href]"></a>
   [end]
   </p>
 [end]
